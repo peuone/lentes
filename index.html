@@ -33,7 +33,11 @@
         .header {
             text-align: center;
             margin-bottom: 40px;
-            color: var(--white-text);
+        }
+
+        .header img {
+            max-width: 200px; /* Tamanho da logo */
+            height: auto;
         }
 
         .options-grid {
@@ -149,13 +153,20 @@
         .whatsapp-button:hover {
             background-color: #128C7E; /* Verde mais escuro no hover */
         }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--white-text);
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Logo da Óticas Diniz -->
         <div class="header">
-            <h1>Óticas Diniz</h1>
-            <h2>Configurador de Lentes</h2>
+            <img src="https://oticasdiniz.vteximg.com.br/arquivos/logoNewMenu.png" alt="Logo Óticas Diniz">
         </div>
 
         <!-- Passos da navegação -->
@@ -168,12 +179,12 @@
                     <p>Lentes para correção de problemas de visão de perto ou longe.</p>
                 </div>
                 <div class="option-card" onclick="selectCategory('multifocais')">
-                    <img src="https://github.com/user-attachments/assets/2258869e-f3ff-4208-a656-3f5c55184869?text=Multifocais" alt="Multifocais">
+                    <img src="https://via.placeholder.com/150?text=Multifocais" alt="Multifocais">
                     <h4>Multifocais</h4>
                     <p>Lentes que corrigem visão de perto, intermediária e longe.</p>
                 </div>
                 <div class="option-card" onclick="selectCategory('bifocais')">
-                    <img src="https://github.com/user-attachments/assets/dac309bc-2e44-43e7-b0e2-f31df4e0e234?text=Bifocais" alt="Bifocais">
+                    <img src="https://via.placeholder.com/150?text=Bifocais" alt="Bifocais">
                     <h4>Bifocais</h4>
                     <p>Lentes com duas áreas de visão: perto e longe.</p>
                 </div>
@@ -185,6 +196,11 @@
         <div id="step4" class="step"></div>
         <div id="step5" class="step"></div>
         <div id="summary" class="step summary"></div>
+    </div>
+
+    <!-- Rodapé com créditos -->
+    <div class="footer">
+        Em desenvolvimento por Pedro Rodrigues Diniz - Recife Centro
     </div>
 
     <script>
