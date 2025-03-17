@@ -133,6 +133,22 @@
         h3 {
             color: var(--white-text);
         }
+
+        .whatsapp-button {
+            background-color: #25D366; /* Verde do WhatsApp */
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 1.1em;
+            transition: background-color 0.3s;
+        }
+
+        .whatsapp-button:hover {
+            background-color: #128C7E; /* Verde mais escuro no hover */
+        }
     </style>
 </head>
 <body>
@@ -402,6 +418,16 @@
         // Mostrar resumo final
         function showSummary() {
             const summary = document.getElementById('summary');
+            const whatsappMessage = `Olá, gostaria de solicitar uma lente com as seguintes especificações:
+- Categoria: ${currentSelection.category.replace('-', ' ').toUpperCase()}
+- Tipo: ${currentSelection.type}
+${currentSelection.versao ? `- Versão: ${currentSelection.versao}\n` : ''}
+${currentSelection.bifocalCategory ? `- Categoria Bifocal: ${currentSelection.bifocalCategory}\n` : ''}
+- Fotossensível: ${currentSelection.fotossensivel}
+- Antirreflexo: ${currentSelection.antirreflexo}`;
+
+            const whatsappLink = `https://wa.me/5581997665895?text=${encodeURIComponent(whatsappMessage)}`;
+
             summary.innerHTML = `
                 <h3>Resumo da Sua Escolha:</h3>
                 <p><strong>Categoria:</strong> ${currentSelection.category.replace('-', ' ').toUpperCase()}</p>
@@ -414,6 +440,7 @@
                     <button class="back-button" onclick="goBack()">Voltar</button>
                     <button onclick="init()">Reiniciar</button>
                 </div>
+                <a href="${whatsappLink}" class="whatsapp-button" target="_blank">Clique aqui e envie para a loja</a>
             `;
             navigateTo('summary');
         }
