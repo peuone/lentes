@@ -9,12 +9,13 @@
     <style>
         :root {
             --primary-color: #c4161c; /* Vermelho das Óticas Diniz */
-            --secondary-color: #FFFFFF; /* Fundo branco para cards */
+            --secondary-color: #FFFFFF; /* Branco */
             --hover-color: #a01217; /* Vermelho mais escuro para hover */
             --back-color: #6C757D; /* Cinza para o botão de voltar */
-            --text-color: #333; /* Cor do texto (preto) */
-            --background-color: #c4161c; /* Cor de fundo da página */
-            --white-text: #FFFFFF; /* Texto branco */
+            --text-color: #333333; /* Cinza escuro para textos */
+            --background-color: #F4F4F4; /* Cinza claro para fundo da página */
+            --white-text: #FFFFFF; /* Branco para textos em fundos escuros */
+            --premium-color: #FFD700; /* Dourado para realces premium */
         }
 
         body {
@@ -88,7 +89,7 @@
 
         button {
             background-color: var(--primary-color);
-            color: var(--secondary-color);
+            color: var(--white-text);
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
@@ -126,8 +127,8 @@
         }
 
         .premium-badge {
-            background: gold;
-            color: black;
+            background: var(--premium-color);
+            color: var(--text-color);
             padding: 3px 8px;
             border-radius: 3px;
             font-size: 0.8em;
@@ -135,7 +136,7 @@
         }
 
         h3 {
-            color: var(--white-text);
+            color: var(--primary-color);
         }
 
         .whatsapp-button {
@@ -157,8 +158,22 @@
         .footer {
             text-align: center;
             margin-top: 40px;
-            color: var(--white-text);
+            color: var(--text-color);
             font-size: 0.9em;
+        }
+
+        .welcome-step {
+            text-align: center;
+        }
+
+        .welcome-step input {
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            width: 80%;
+            max-width: 300px;
         }
     </style>
 </head>
@@ -166,25 +181,34 @@
     <div class="container">
         <!-- Logo da Óticas Diniz -->
         <div class="header">
-            <img src="https://oticasdiniz.vteximg.com.br/arquivos/logoNewMenu.png" alt="Logo Óticas Diniz">
+            <img src="https://github.com/user-attachments/assets/831e6703-1f64-4072-99f4-b935d4b26f19" alt="Logo Óticas Diniz">
+        </div>
+
+        <!-- Página inicial com campo para o nome do cliente -->
+        <div id="welcome-step" class="step active welcome-step">
+            <h3>Bem-vindo ao Configurador de Lentes</h3>
+            <input type="text" id="client-name" placeholder="Digite o nome do cliente">
+            <div class="navigation-buttons">
+                <button onclick="startAtendimento()">Iniciar Atendimento</button>
+            </div>
         </div>
 
         <!-- Passos da navegação -->
-        <div id="step1" class="step active">
+        <div id="step1" class="step">
             <h3>Selecione o Tipo de Lente:</h3>
             <div class="options-grid">
                 <div class="option-card" onclick="selectCategory('visao-simples')">
-                    <img src="https://via.placeholder.com/150?text=Visão+Simples" alt="Visão Simples">
+                    <img src="https://github.com/user-attachments/assets/7fb4a384-a63e-4551-a860-52888aeec5b4" alt="Visão Simples">
                     <h4>Visão Simples</h4>
                     <p>Lentes para correção de problemas de visão de perto ou longe.</p>
                 </div>
                 <div class="option-card" onclick="selectCategory('multifocais')">
-                    <img src="https://via.placeholder.com/150?text=Multifocais" alt="Multifocais">
+                    <img src="https://github.com/user-attachments/assets/2bd9af62-9fb7-4731-bf88-c49d73437d9d" alt="Multifocais">
                     <h4>Multifocais</h4>
                     <p>Lentes que corrigem visão de perto, intermediária e longe.</p>
                 </div>
                 <div class="option-card" onclick="selectCategory('bifocais')">
-                    <img src="https://via.placeholder.com/150?text=Bifocais" alt="Bifocais">
+                    <img src="https://github.com/user-attachments/assets/5016c6da-1528-45da-b36e-9d5d69277afb" alt="Bifocais">
                     <h4>Bifocais</h4>
                     <p>Lentes com duas áreas de visão: perto e longe.</p>
                 </div>
@@ -254,11 +278,12 @@
             versao: '',
             fotossensivel: '',
             antirreflexo: '',
-            bifocalCategory: ''
+            bifocalCategory: '',
+            clientName: ''
         };
 
         // Histórico de navegação
-        let currentStepHistory = ['step1'];
+        let currentStepHistory = ['welcome-step'];
 
         // Função para navegar entre passos
         function navigateTo(stepId, fromHistory = false) {
@@ -274,6 +299,17 @@
                 const prevStep = currentStepHistory[currentStepHistory.length - 1];
                 navigateTo(prevStep, true);
             }
+        }
+
+        // Iniciar atendimento
+        function startAtendimento() {
+            const clientName = document.getElementById('client-name').value;
+            if (!clientName) {
+                alert('Por favor, insira o nome do cliente.');
+                return;
+            }
+            currentSelection.clientName = clientName;
+            navigateTo('step1');
         }
 
         // Seleção de categoria
@@ -435,6 +471,7 @@
         function showSummary() {
             const summary = document.getElementById('summary');
             const whatsappMessage = `Olá, gostaria de solicitar uma lente com as seguintes especificações:
+- Cliente: ${currentSelection.clientName}
 - Categoria: ${currentSelection.category.replace('-', ' ').toUpperCase()}
 - Tipo: ${currentSelection.type}
 ${currentSelection.versao ? `- Versão: ${currentSelection.versao}\n` : ''}
@@ -446,6 +483,7 @@ ${currentSelection.bifocalCategory ? `- Categoria Bifocal: ${currentSelection.bi
 
             summary.innerHTML = `
                 <h3>Resumo da Sua Escolha:</h3>
+                <p><strong>Cliente:</strong> ${currentSelection.clientName}</p>
                 <p><strong>Categoria:</strong> ${currentSelection.category.replace('-', ' ').toUpperCase()}</p>
                 <p><strong>Tipo:</strong> ${currentSelection.type}</p>
                 ${currentSelection.versao ? `<p><strong>Versão:</strong> ${currentSelection.versao}</p>` : ''}
@@ -469,10 +507,11 @@ ${currentSelection.bifocalCategory ? `- Categoria Bifocal: ${currentSelection.bi
                 versao: '',
                 fotossensivel: '',
                 antirreflexo: '',
-                bifocalCategory: ''
+                bifocalCategory: '',
+                clientName: ''
             };
-            currentStepHistory = ['step1'];
-            navigateTo('step1');
+            currentStepHistory = ['welcome-step'];
+            navigateTo('welcome-step');
         }
 
         // Inicializa o sistema
