@@ -175,6 +175,28 @@
             width: 80%;
             max-width: 300px;
         }
+
+        .observations {
+            margin-top: 20px;
+        }
+
+        .observations label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .observations textarea {
+            width: 100%;
+            max-width: 500px;
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            resize: vertical;
+            min-height: 100px;
+        }
     </style>
 </head>
 <body>
@@ -479,6 +501,12 @@ ${currentSelection.bifocalCategory ? `- Categoria Bifocal: ${currentSelection.bi
 - Fotossensível: ${currentSelection.fotossensivel}
 - Antirreflexo: ${currentSelection.antirreflexo}`;
 
+            // Captura o valor do campo de observações
+            const observations = document.getElementById('observations')?.value || '';
+            if (observations) {
+                whatsappMessage += `\n\nObservações:\n${observations}`;
+            }
+
             const whatsappLink = `https://wa.me/5581997665895?text=${encodeURIComponent(whatsappMessage)}`;
 
             summary.innerHTML = `
@@ -490,12 +518,28 @@ ${currentSelection.bifocalCategory ? `- Categoria Bifocal: ${currentSelection.bi
                 ${currentSelection.bifocalCategory ? `<p><strong>Categoria Bifocal:</strong> ${currentSelection.bifocalCategory}</p>` : ''}
                 <p><strong>Fotossensível:</strong> ${currentSelection.fotossensivel}</p>
                 <p><strong>Antirreflexo:</strong> ${currentSelection.antirreflexo}</p>
+                
+                <!-- Campo de observações -->
+                <div class="observations">
+                    <label for="observations">Observações (opcional):</label>
+                    <textarea id="observations" placeholder="Adicione observações, se necessário"></textarea>
+                </div>
+
                 <div class="navigation-buttons">
                     <button class="back-button" onclick="goBack()">Voltar</button>
                     <button onclick="init()">Reiniciar</button>
                 </div>
-                <a href="${whatsappLink}" class="whatsapp-button" target="_blank">Clique aqui e envie para a loja</a>
+                <a href="${whatsappLink}" class="whatsapp-button" target="_blank" id="whatsapp-link">Clique aqui e envie para a loja</a>
             `;
+
+            // Atualiza o link do WhatsApp ao digitar observações
+            document.getElementById('observations').addEventListener('input', function() {
+                const updatedObservations = this.value;
+                const updatedMessage = whatsappMessage + (updatedObservations ? `\n\nObservações:\n${updatedObservations}` : '');
+                const updatedLink = `https://wa.me/5581997665895?text=${encodeURIComponent(updatedMessage)}`;
+                document.getElementById('whatsapp-link').href = updatedLink;
+            });
+
             navigateTo('summary');
         }
 
