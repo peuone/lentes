@@ -429,25 +429,26 @@
 
         // Mostrar seleção de fotossensível
         function showFotossensivelSelection() {
-            const stepId = currentSelection.versao ? 'step4' : 'step3';
-            const step = document.getElementById(stepId);
-            step.innerHTML = `
-                <h3>Tratamento Fotossensível:</h3>
-                <div class="options-grid">
-                    ${options[currentSelection.category].fotossensivel.map(opt => `
-                        <div class="option-card" onclick="selectFotossensivel('${opt}')">
-                            <img src="pictures/fotossensivel.png?text=${opt}" alt="${opt}">
-                            <h4>${opt}</h4>
-                            <p>${opt === 'Sim' ? 'Lentes que escurecem automaticamente ao sol, proporcionando conforto visual em ambientes externos e internos.' : 'Lentes sem alteração ao sol, mantendo a transparência em qualquer ambiente.'}</p>
-                        </div>
-                    `).join('')}
+    const stepId = currentSelection.versao ? 'step4' : 'step3';
+    const step = document.getElementById(stepId);
+    step.innerHTML = `
+        <h3>Tratamento Fotossensível:</h3>
+        <div class="options-grid">
+            ${options[currentSelection.category].fotossensivel.map(opt => `
+                <div class="option-card" onclick="selectFotossensivel('${opt}')">
+                    <!-- Imagem personalizada para Sim e Não -->
+                    <img src="${opt === 'Sim' ? 'pictures/fotossensivel-sim.png' : 'pictures/fotossensivel-nao.png'}" alt="${opt}">
+                    <h4>${opt}</h4>
+                    <p>${opt === 'Sim' ? 'Lentes que escurecem automaticamente ao sol, proporcionando conforto visual em ambientes externos e internos.' : 'Lentes sem alteração ao sol, mantendo a transparência em qualquer ambiente.'}</p>
                 </div>
-                <div class="navigation-buttons">
-                    <button class="back-button" onclick="goBack()">Voltar</button>
-                </div>
-            `;
-            navigateTo(stepId);
-        }
+            `).join('')}
+        </div>
+        <div class="navigation-buttons">
+            <button class="back-button" onclick="goBack()">Voltar</button>
+        </div>
+    `;
+    navigateTo(stepId);
+}
 
         // Seleção de fotossensível
         function selectFotossensivel(opt) {
