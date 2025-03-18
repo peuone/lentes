@@ -458,31 +458,67 @@
 
         // Mostrar seleção de antirreflexo
         function showAntirreflexoSelection() {
-            const stepId = currentSelection.versao ? 'step5' : 'step4';
-            const step = document.getElementById(stepId);
-            const antirreflexoOptions = currentSelection.category === 'multifocais' ?
-                options.multifocais.antirreflexo[currentSelection.type] : options[currentSelection.category].antirreflexo;
+    const stepId = currentSelection.versao ? 'step5' : 'step4';
+    const step = document.getElementById(stepId);
+    const antirreflexoOptions = currentSelection.category === 'multifocais' ?
+        options.multifocais.antirreflexo[currentSelection.type] : options[currentSelection.category].antirreflexo;
 
-            step.innerHTML = `
-                <h3>Tratamento Antirreflexo:</h3>
-                <div class="options-grid">
-                    ${antirreflexoOptions.map(opt => `
-                        <div class="option-card" onclick="selectAntirreflexo('${opt}')">
-                            <img src="https://via.placeholder.com/150?text=${opt}" alt="${opt}">
-                            <h4>${opt} ${opt.includes('Premium') ? '<span class="premium-badge">2 anos de garantia</span>' : ''}</h4>
-                            <p>${opt === 'Sem Antirreflexo' ? 'Sem tratamento adicional.' : 
-                               opt === 'Verde' || opt === 'Verde Premium' ? 'Proteção contra reflexos e luz intensa, ideal para ambientes externos.' :
-                               opt === 'Azul' || opt === 'Azul Premium' ? 'Proteção contra a luz azul nociva de dispositivos digitais, reduzindo a fadiga ocular.' :
-                               'Lentes solares para proteção contra raios UV.'}</p>
-                        </div>
-                    `).join('')}
+    step.innerHTML = `
+        <h3>Tratamento Antirreflexo:</h3>
+        <div class="options-grid">
+            ${antirreflexoOptions.map(opt => `
+                <div class="option-card" onclick="selectAntirreflexo('${opt}')">
+                    <!-- Imagem personalizada para cada tipo de antirreflexo -->
+                    <img src="${getAntirreflexoImage(opt)}" alt="${opt}">
+                    <h4>${opt} ${opt.includes('Premium') ? '<span class="premium-badge">2 anos de garantia</span>' : ''}</h4>
+                    <p>${getAntirreflexoDescription(opt)}</p>
                 </div>
-                <div class="navigation-buttons">
-                    <button class="back-button" onclick="goBack()">Voltar</button>
-                </div>
-            `;
-            navigateTo(stepId);
-        }
+            `).join('')}
+        </div>
+        <div class="navigation-buttons">
+            <button class="back-button" onclick="goBack()">Voltar</button>
+        </div>
+    `;
+    navigateTo(stepId);
+}
+
+// Função para retornar a imagem correta para cada tipo de antirreflexo
+function getAntirreflexoImage(opt) {
+    switch (opt) {
+        case 'Verde':
+            return 'pictures/arverde.png';
+        case 'Azul':
+            return 'pictures/arazul.png';
+        case 'Solar':
+            return 'pictures/antirreflexo-solar.png';
+        case 'Verde Premium':
+            return 'pictures/arverde.png';
+        case 'Azul Premium':
+            return 'pictures/arazul.png';
+        case 'Sem Antirreflexo':
+            return 'pictures/sem-antirreflexo.png';
+        default:
+            return 'https://via.placeholder.com/150?text=' + opt;
+    }
+}
+
+// Função para retornar a descrição correta para cada tipo de antirreflexo
+function getAntirreflexoDescription(opt) {
+    switch (opt) {
+        case 'Sem Antirreflexo':
+            return 'Sem tratamento adicional.';
+        case 'Verde':
+        case 'Verde Premium':
+            return 'Proteção contra reflexos e luz intensa, ideal para ambientes externos.';
+        case 'Azul':
+        case 'Azul Premium':
+            return 'Proteção contra a luz azul nociva de dispositivos digitais, reduzindo a fadiga ocular.';
+        case 'Solar':
+            return 'Lentes solares para proteção contra raios UV.';
+        default:
+            return 'Descrição não disponível.';
+    }
+}
 
         // Seleção de antirreflexo
         function selectAntirreflexo(opt) {
