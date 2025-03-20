@@ -216,27 +216,7 @@
         </div>
 
         <!-- Passos da navegação -->
-        <div id="step1" class="step">
-            <h3>Selecione o Tipo de Lente:</h3>
-            <div class="options-grid">
-                <div class="option-card" onclick="selectCategory('visao-simples')">
-                    <img src="pictures/visao simples 2.png" alt="Visão Simples">
-                    <h4>Visão Simples</h4>
-                    <p>Lentes para correção de problemas de visão de perto ou longe.</p>
-                </div>
-                <div class="option-card" onclick="selectCategory('multifocais')">
-                    <img src="pictures/MULTIFOCAL2.png" alt="Multifocais">
-                    <h4>Multifocais</h4>
-                    <p>Lentes que corrigem visão de perto, intermediária e longe.</p>
-                </div>
-                <div class="option-card" onclick="selectCategory('bifocais')">
-                    <img src="pictures/bifocal2.png" alt="Bifocais">
-                    <h4>Bifocais</h4>
-                    <p>Lentes com duas áreas de visão: perto e longe.</p>
-                </div>
-            </div>
-        </div>
-
+        <div id="step1" class="step"></div>
         <div id="step2" class="step"></div>
         <div id="step3" class="step"></div>
         <div id="step4" class="step"></div>
@@ -247,10 +227,9 @@
     <!-- Rodapé com créditos -->
     <div class="footer">
         <footer style="text-align: center; padding: 10px; background-color: #f4f4f4; font-size: 14px;">
-    <p>🚧 Em desenvolvimento por <strong>Pedro Rodrigues</strong> – <em>Não sou Dev, mas tô tentando!</em> 😅</p>
-    <p>📩 Sugestões? Me chama no WhatsApp: <a href="https://wa.me/5581997665895" target="_blank">+55 81 99766-5895</a></p>
-</footer>
-        
+            <p>🚧 Em desenvolvimento por <strong>Pedro Rodrigues</strong> – <em>Não sou Dev, mas tô tentando!</em> 😅</p>
+            <p>📩 Sugestões? Me chama no WhatsApp: <a href="https://wa.me/5581997665895" target="_blank">+55 81 99766-5895</a></p>
+        </footer>
     </div>
 
     <script>
@@ -282,7 +261,7 @@
                 antirreflexo: {
                     'Convencional': ['Sem Antirreflexo', 'Verde', 'Azul', 'Solar'],
                     'Digital': ['Sem Antirreflexo', 'Verde', 'Azul', 'Solar'],
-                    'Freeform': ['Sem Antirreflexo', 'Verde', 'Azul', 'Verde Premium', 'Azul Premium']
+                    'Freeform': ['Sem Antirreflexo', 'Verde', 'Azul', 'Verde Premium', 'Azul Premium', 'Solar']
                 }
             },
             'bifocais': {
@@ -305,7 +284,8 @@
             fotossensivel: '',
             antirreflexo: '',
             bifocalCategory: '',
-            clientName: ''
+            clientName: '',
+            receitaMedica: ''
         };
 
         // Histórico de navegação
@@ -335,7 +315,114 @@
                 return;
             }
             currentSelection.clientName = clientName;
+            showReceitaMedicaStep();
+        }
+
+        // Nova etapa para perguntar sobre a receita médica
+        function showReceitaMedicaStep() {
+            const step = document.getElementById('step1');
+            step.innerHTML = `
+                <h3>Você tem receita médica?</h3>
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectReceitaMedica('Sim')">
+                        <h4>Sim, tenho receita.</h4>
+                        <p>Quero prosseguir com o assistente de lentes.</p>
+                    </div>
+                    <div class="option-card" onclick="selectReceitaMedica('Não')">
+                        <h4>Não tenho receita médica.</h4>
+                        <p>Gostaria de agendar uma consulta.</p>
+                    </div>
+                </div>
+                <div class="navigation-buttons">
+                    <button class="back-button" onclick="goBack()">Voltar</button>
+                </div>
+            `;
             navigateTo('step1');
+        }
+
+        // Seleção de receita médica
+        function selectReceitaMedica(opt) {
+            currentSelection.receitaMedica = opt;
+            if (opt === 'Sim') {
+                showCategorySelection();
+            } else {
+                showAgendarConsultaStep();
+            }
+        }
+
+        // Nova etapa para perguntar se quer enviar sugestão de lentes
+        function showAgendarConsultaStep() {
+            const step = document.getElementById('step2');
+            step.innerHTML = `
+                <h3>Quer enviar para a loja sua sugestão de lentes?</h3>
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectEnviarSugestao('Sim')">
+                        <h4>Sim</h4>
+                        <p>Quero enviar minha sugestão de lentes.</p>
+                    </div>
+                    <div class="option-card" onclick="selectEnviarSugestao('Não')">
+                        <h4>Não</h4>
+                        <p>Quero apenas agendar uma consulta.</p>
+                    </div>
+                </div>
+                <div class="navigation-buttons">
+                    <button class="back-button" onclick="goBack()">Voltar</button>
+                </div>
+            `;
+            navigateTo('step2');
+        }
+
+        // Seleção de enviar sugestão
+        function selectEnviarSugestao(opt) {
+            if (opt === 'Sim') {
+                showCategorySelection();
+            } else {
+                showAgendamentoConsulta();
+            }
+        }
+
+        // Nova etapa para agendamento de consulta
+        function showAgendamentoConsulta() {
+            const summary = document.getElementById('summary');
+            const whatsappMessage = `Olá, gostaria de agendar uma consulta. Cliente: ${currentSelection.clientName}`;
+
+            const whatsappLink = `https://wa.me/5581997665895?text=${encodeURIComponent(whatsappMessage)}`;
+
+            summary.innerHTML = `
+                <h3>Agendamento de Consulta:</h3>
+                <p><strong>Cliente:</strong> ${currentSelection.clientName}</p>
+                <a href="${whatsappLink}" class="whatsapp-button" target="_blank">Clique aqui para agendar a consulta</a>
+                <div class="navigation-buttons">
+                    <button onclick="init()">Reiniciar</button>
+                </div>
+            `;
+            navigateTo('summary');
+        }
+
+        // Mostrar seleção de categoria
+        function showCategorySelection() {
+            const step2 = document.getElementById('step2');
+            step2.innerHTML = `
+                <h3>Selecione a Categoria de Lentes:</h3>
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectCategory('visao-simples')">
+                        <h4>Visão Simples</h4>
+                        <p>Lentes para correção de miopia, hipermetropia ou astigmatismo.</p>
+                    </div>
+                    <div class="option-card" onclick="selectCategory('multifocais')">
+                        <h4>Multifocais</h4>
+                        <p>Lentes para correção de presbiopia (vista cansada).</p>
+                    </div>
+                    <div class="option-card" onclick="selectCategory('bifocais')">
+                        <h4>Bifocais</h4>
+                        <p>Lentes com duas áreas de visão: perto e longe.</p>
+                    </div>
+                </div>
+                <div class="navigation-buttons">
+                    <button class="back-button" onclick="goBack()">Voltar</button>
+                </div>
+            `;
+            navigateTo('step2');
         }
 
         // Seleção de categoria
@@ -346,9 +433,9 @@
 
         // Mostrar seleção de tipo
         function showTypeSelection() {
-            const step2 = document.getElementById('step2');
+            const step3 = document.getElementById('step3');
             const categoryData = options[currentSelection.category];
-            step2.innerHTML = `
+            step3.innerHTML = `
                 <h3>Selecione o Tipo de ${currentSelection.category.replace('-', ' ').toUpperCase()}:</h3>
                 <div class="options-grid">
                     ${categoryData.types.map(type => `
@@ -363,7 +450,7 @@
                     <button class="back-button" onclick="goBack()">Voltar</button>
                 </div>
             `;
-            navigateTo('step2');
+            navigateTo('step3');
         }
 
         // Seleção de tipo
@@ -380,8 +467,8 @@
 
         // Mostrar seleção de versão (apenas para Multifocais Freeform)
         function showVersionSelection() {
-            const step3 = document.getElementById('step3');
-            step3.innerHTML = `
+            const step4 = document.getElementById('step4');
+            step4.innerHTML = `
                 <h3>Selecione a Versão Freeform:</h3>
                 <div class="options-grid">
                     ${options.multifocais.versions.map(version => `
@@ -396,7 +483,7 @@
                     <button class="back-button" onclick="goBack()">Voltar</button>
                 </div>
             `;
-            navigateTo('step3');
+            navigateTo('step4');
         }
 
         // Seleção de versão
@@ -407,8 +494,8 @@
 
         // Mostrar seleção de categoria para bifocais
         function showBifocalCategorySelection() {
-            const step3 = document.getElementById('step3');
-            step3.innerHTML = `
+            const step4 = document.getElementById('step4');
+            step4.innerHTML = `
                 <h3>Selecione a Categoria de Bifocais:</h3>
                 <div class="options-grid">
                     ${options.bifocais.categories.map(category => `
@@ -422,7 +509,7 @@
                     <button class="back-button" onclick="goBack()">Voltar</button>
                 </div>
             `;
-            navigateTo('step3');
+            navigateTo('step4');
         }
 
         // Seleção de categoria para bifocais
@@ -433,26 +520,25 @@
 
         // Mostrar seleção de fotossensível
         function showFotossensivelSelection() {
-    const stepId = currentSelection.versao ? 'step4' : 'step3';
-    const step = document.getElementById(stepId);
-    step.innerHTML = `
-        <h3>Tratamento Fotossensível:</h3>
-        <div class="options-grid">
-            ${options[currentSelection.category].fotossensivel.map(opt => `
-                <div class="option-card" onclick="selectFotossensivel('${opt}')">
-                    <!-- Imagem personalizada para Sim e Não -->
-                    <img src="${opt === 'Sim' ? 'pictures/fotossensivel-sim.png' : 'pictures/fotossensivel-nao.png'}" alt="${opt}">
-                    <h4>${opt}</h4>
-                    <p>${opt === 'Sim' ? 'Lentes que escurecem automaticamente ao sol, proporcionando conforto visual em ambientes externos e internos.' : 'Lentes sem alteração ao sol, mantendo a transparência em qualquer ambiente.'}</p>
+            const stepId = currentSelection.versao ? 'step5' : 'step4';
+            const step = document.getElementById(stepId);
+            step.innerHTML = `
+                <h3>Tratamento Fotossensível:</h3>
+                <div class="options-grid">
+                    ${options[currentSelection.category].fotossensivel.map(opt => `
+                        <div class="option-card" onclick="selectFotossensivel('${opt}')">
+                            <img src="${opt === 'Sim' ? 'pictures/fotossensivel-sim.png' : 'pictures/fotossensivel-nao.png'}" alt="${opt}">
+                            <h4>${opt}</h4>
+                            <p>${opt === 'Sim' ? 'Lentes que escurecem automaticamente ao sol, proporcionando conforto visual em ambientes externos e internos.' : 'Lentes sem alteração ao sol, mantendo a transparência em qualquer ambiente.'}</p>
+                        </div>
+                    `).join('')}
                 </div>
-            `).join('')}
-        </div>
-        <div class="navigation-buttons">
-            <button class="back-button" onclick="goBack()">Voltar</button>
-        </div>
-    `;
-    navigateTo(stepId);
-}
+                <div class="navigation-buttons">
+                    <button class="back-button" onclick="goBack()">Voltar</button>
+                </div>
+            `;
+            navigateTo(stepId);
+        }
 
         // Seleção de fotossensível
         function selectFotossensivel(opt) {
@@ -462,68 +548,68 @@
 
         // Mostrar seleção de antirreflexo
         function showAntirreflexoSelection() {
-    const stepId = currentSelection.versao ? 'step5' : 'step4';
-    const step = document.getElementById(stepId);
-    const antirreflexoOptions = currentSelection.category === 'multifocais' ?
-        options.multifocais.antirreflexo[currentSelection.type] : options[currentSelection.category].antirreflexo;
+            const stepId = currentSelection.versao ? 'step5' : 'step4';
+            const step = document.getElementById(stepId);
+            const antirreflexoOptions = currentSelection.category === 'multifocais' ?
+                options.multifocais.antirreflexo[currentSelection.type] : options[currentSelection.category].antirreflexo;
 
-    step.innerHTML = `
-        <h3>Tratamento Antirreflexo:</h3>
-        <div class="options-grid">
-            ${antirreflexoOptions.map(opt => `
-                <div class="option-card" onclick="selectAntirreflexo('${opt}')">
-                    <img src="${getAntirreflexoImage(opt)}" alt="${opt}">
-                    <h4>${opt} ${opt.includes('Premium') ? '<span class="premium-badge">2 anos de garantia</span>' : ''}</h4>
-                    <p>${getAntirreflexoDescription(opt)}</p>
+            step.innerHTML = `
+                <h3>Tratamento Antirreflexo:</h3>
+                <div class="options-grid">
+                    ${antirreflexoOptions.map(opt => `
+                        <div class="option-card" onclick="selectAntirreflexo('${opt}')">
+                            <img src="${getAntirreflexoImage(opt)}" alt="${opt}">
+                            <h4>${opt} ${opt.includes('Premium') ? '<span class="premium-badge">2 anos de garantia</span>' : ''}</h4>
+                            <p>${getAntirreflexoDescription(opt)}</p>
+                        </div>
+                    `).join('')}
                 </div>
-            `).join('')}
-        </div>
-        <div class="navigation-buttons">
-            <button class="back-button" onclick="goBack()">Voltar</button>
-        </div>
-    `;
-    navigateTo(stepId);
-}
+                <div class="navigation-buttons">
+                    <button class="back-button" onclick="goBack()">Voltar</button>
+                </div>
+            `;
+            navigateTo(stepId);
+        }
 
-// Função para retornar a imagem correta para cada tipo de antirreflexo
-function getAntirreflexoImage(opt) {
-    switch (opt) {
-        case 'Verde':
-            return 'pictures/arverde.png';
-        case 'Azul':
-            return 'pictures/arazul.png';
-        case 'Solar':
-            return 'pictures/antirreflexo-solar.png';
-        case 'Verde Premium':
-            return 'pictures/arverde.png';
-        case 'Azul Premium':
-            return 'pictures/arazul.png';
-        case 'Sem Antirreflexo':
-            return 'pictures/sem-antirreflexo.png';
-        default:
-            return 'https://via.placeholder.com/150?text=' + opt;
-    }
-}
+        // Função para retornar a imagem correta para cada tipo de antirreflexo
+        function getAntirreflexoImage(opt) {
+            switch (opt) {
+                case 'Verde':
+                    return 'pictures/arverde.png';
+                case 'Azul':
+                    return 'pictures/arazul.png';
+                case 'Solar':
+                    return 'pictures/antirreflexo-solar.png';
+                case 'Verde Premium':
+                    return 'pictures/arverde.png';
+                case 'Azul Premium':
+                    return 'pictures/arazul.png';
+                case 'Sem Antirreflexo':
+                    return 'pictures/sem-antirreflexo.png';
+                default:
+                    return 'https://via.placeholder.com/150?text=' + opt;
+            }
+        }
 
-// Função para retornar a descrição correta para cada tipo de antirreflexo
-function getAntirreflexoDescription(opt) {
-    switch (opt) {
-        case 'Sem Antirreflexo':
-            return 'Sem tratamento adicional.';
-        case 'Verde':
-            return 'Proteção contra reflexos e luz intensa, ideal para ambientes externos.';
-        case 'Azul':
-            return 'Proteção contra a luz azul nociva de dispositivos digitais, reduzindo a fadiga ocular.';
-        case 'Solar':
-            return 'Lentes solares para proteção contra raios UV.';
-        case 'Verde Premium':
-            return 'Proteção premium contra reflexos e luz intensa, com durabilidade de 2 anos. Ideal para ambientes externos.';
-        case 'Azul Premium':
-            return 'Proteção premium contra a luz azul nociva, com durabilidade de 2 anos. Reduz a fadiga ocular em dispositivos digitais.';
-        default:
-            return 'Descrição não disponível.';
-    }
-}
+        // Função para retornar a descrição correta para cada tipo de antirreflexo
+        function getAntirreflexoDescription(opt) {
+            switch (opt) {
+                case 'Sem Antirreflexo':
+                    return 'Sem tratamento adicional.';
+                case 'Verde':
+                    return 'Proteção contra reflexos e luz intensa, ideal para ambientes externos.';
+                case 'Azul':
+                    return 'Proteção contra a luz azul nociva de dispositivos digitais, reduzindo a fadiga ocular.';
+                case 'Solar':
+                    return 'Lentes solares para proteção contra raios UV.';
+                case 'Verde Premium':
+                    return 'Proteção premium contra reflexos e luz intensa, com durabilidade de 2 anos. Ideal para ambientes externos.';
+                case 'Azul Premium':
+                    return 'Proteção premium contra a luz azul nociva, com durabilidade de 2 anos. Reduz a fadiga ocular em dispositivos digitais.';
+                default:
+                    return 'Descrição não disponível.';
+            }
+        }
 
         // Seleção de antirreflexo
         function selectAntirreflexo(opt) {
@@ -534,19 +620,24 @@ function getAntirreflexoDescription(opt) {
         // Mostrar resumo final
         function showSummary() {
             const summary = document.getElementById('summary');
-            const whatsappMessage = `Olá, gostaria de solicitar uma lente com as seguintes especificações:
-- Cliente: ${currentSelection.clientName}
-- Categoria: ${currentSelection.category.replace('-', ' ').toUpperCase()}
-- Tipo: ${currentSelection.type}
-${currentSelection.versao ? `- Versão: ${currentSelection.versao}\n` : ''}
-${currentSelection.bifocalCategory ? `- Categoria Bifocal: ${currentSelection.bifocalCategory}\n` : ''}
-- Fotossensível: ${currentSelection.fotossensivel}
-- Antirreflexo: ${currentSelection.antirreflexo}`;
+            let whatsappMessage = `Olá, gostaria de solicitar uma lente com as seguintes especificações:\n\n`;
+            whatsappMessage += `*Cliente:* ${currentSelection.clientName}\n`;
+            whatsappMessage += `*Categoria:* ${currentSelection.category.replace('-', ' ').toUpperCase()}\n`;
+            whatsappMessage += `*Tipo:* ${currentSelection.type}\n`;
+            if (currentSelection.versao) whatsappMessage += `*Versão:* ${currentSelection.versao}\n`;
+            if (currentSelection.bifocalCategory) whatsappMessage += `*Categoria Bifocal:* ${currentSelection.bifocalCategory}\n`;
+            whatsappMessage += `*Fotossensível:* ${currentSelection.fotossensivel}\n`;
+            whatsappMessage += `*Antirreflexo:* ${currentSelection.antirreflexo}\n`;
+
+            // Se o cliente não tem receita médica, mas escolheu as lentes, informar que quer agendar consulta
+            if (currentSelection.receitaMedica === 'Não') {
+                whatsappMessage += `\n*Observação:* O cliente não possui receita médica e deseja agendar uma consulta.\n`;
+            }
 
             // Captura o valor do campo de observações
             const observations = document.getElementById('observations')?.value || '';
             if (observations) {
-                whatsappMessage += `\n\nObservações:\n${observations}`;
+                whatsappMessage += `\n*Observações Adicionais:*\n${observations}\n`;
             }
 
             const whatsappLink = `https://wa.me/5581997665895?text=${encodeURIComponent(whatsappMessage)}`;
@@ -577,7 +668,7 @@ ${currentSelection.bifocalCategory ? `- Categoria Bifocal: ${currentSelection.bi
             // Atualiza o link do WhatsApp ao digitar observações
             document.getElementById('observations').addEventListener('input', function() {
                 const updatedObservations = this.value;
-                const updatedMessage = whatsappMessage + (updatedObservations ? `\n\nObservações:\n${updatedObservations}` : '');
+                const updatedMessage = whatsappMessage + (updatedObservations ? `\n\n*Observações Adicionais:*\n${updatedObservations}` : '');
                 const updatedLink = `https://wa.me/5581997665895?text=${encodeURIComponent(updatedMessage)}`;
                 document.getElementById('whatsapp-link').href = updatedLink;
             });
@@ -594,7 +685,8 @@ ${currentSelection.bifocalCategory ? `- Categoria Bifocal: ${currentSelection.bi
                 fotossensivel: '',
                 antirreflexo: '',
                 bifocalCategory: '',
-                clientName: ''
+                clientName: '',
+                receitaMedica: ''
             };
             currentStepHistory = ['welcome-step'];
             navigateTo('welcome-step');
