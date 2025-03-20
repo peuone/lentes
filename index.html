@@ -400,30 +400,33 @@
         }
 
         // Mostrar seleção de categoria
-        function showCategorySelection() {
-            const step2 = document.getElementById('step2');
-            step2.innerHTML = `
-                <h3>Selecione a Categoria de Lentes:</h3>
-                <div class="options-grid">
-                    <div class="option-card" onclick="selectCategory('visao-simples')">
-                        <h4>Visão Simples</h4>
-                        <p>Lentes para correção de miopia, hipermetropia ou astigmatismo.</p>
-                    </div>
-                    <div class="option-card" onclick="selectCategory('multifocais')">
-                        <h4>Multifocais</h4>
-                        <p>Lentes para correção de presbiopia (vista cansada).</p>
-                    </div>
-                    <div class="option-card" onclick="selectCategory('bifocais')">
-                        <h4>Bifocais</h4>
-                        <p>Lentes com duas áreas de visão: perto e longe.</p>
-                    </div>
-                </div>
-                <div class="navigation-buttons">
-                    <button class="back-button" onclick="goBack()">Voltar</button>
-                </div>
-            `;
-            navigateTo('step2');
-        }
+function showCategorySelection() {
+    const step2 = document.getElementById('step2');
+    step2.innerHTML = `
+        <h3>Selecione o Tipo de Lente:</h3>
+        <div class="options-grid">
+            <div class="option-card" onclick="selectCategory('visao-simples')">
+                <img src="pictures/visao simples 2.png" alt="Visão Simples">
+                <h4>Visão Simples</h4>
+                <p>Lentes para correção de problemas de visão de perto ou longe.</p>
+            </div>
+            <div class="option-card" onclick="selectCategory('multifocais')">
+                <img src="pictures/MULTIFOCAL2.png" alt="Multifocais">
+                <h4>Multifocais</h4>
+                <p>Lentes que corrigem visão de perto, intermediária e longe.</p>
+            </div>
+            <div class="option-card" onclick="selectCategory('bifocais')">
+                <img src="pictures/bifocal2.png" alt="Bifocais">
+                <h4>Bifocais</h4>
+                <p>Lentes com duas áreas de visão: perto e longe.</p>
+            </div>
+        </div>
+        <div class="navigation-buttons">
+            <button class="back-button" onclick="goBack()">Voltar</button>
+        </div>
+    `;
+    navigateTo('step2');
+}
 
         // Seleção de categoria
         function selectCategory(category) {
