@@ -515,24 +515,38 @@ function showCategorySelection() {
         }
 
         // Mostrar seleção de categoria para bifocais
-        function showBifocalCategorySelection() {
-            const step4 = document.getElementById('step4');
-            step4.innerHTML = `
-                <h3>Selecione a Categoria de Bifocais:</h3>
-                <div class="options-grid">
-                    ${options.bifocais.categories.map(category => `
-                        <div class="option-card" onclick="selectBifocalCategory('${category}')">
-                            <img src="https://via.placeholder.com/150?text=${category}" alt="${category}">
-                            <h4>${category}</h4>
-                        </div>
-                    `).join('')}
-                </div>
-                <div class="navigation-buttons">
-                    <button class="back-button" onclick="goBack()">Voltar</button>
-                </div>
-            `;
-            navigateTo('step4');
-        }
+function showBifocalCategorySelection() {
+    const step4 = document.getElementById('step4');
+    step4.innerHTML = `
+        <h3>Selecione a Categoria de Bifocais:</h3>
+        <div class="options-grid">
+            <div class="option-card" onclick="selectBifocalCategory('Ultex')">
+                <img src="pictures/ultexn.png" alt="Ultex">
+                <h4>Ultex</h4>
+                <p>Segmento central amplo para leitura.</p>
+            </div>
+            <div class="option-card" onclick="selectBifocalCategory('Panoptik')">
+                <img src="pictures/panon.png" alt="Panoptik">
+                <h4>Panoptik</h4>
+                <p>Transição suave entre distâncias.</p>
+            </div>
+            <div class="option-card" onclick="selectBifocalCategory('Kriptok')">
+                <img src="pictures/kriptokn.png" alt="Kriptok">
+                <h4>Kriptok</h4>
+                <p>Segmento arredondado e discreto.</p>
+            </div>
+            <div class="option-card" onclick="selectBifocalCategory('Executive')">
+                <img src="pictures/executiven.png" alt="Executive">
+                <h4>Executive</h4>
+                <p>Linha bifocal ampla para perto.</p>
+            </div>
+        </div>
+        <div class="navigation-buttons">
+            <button class="back-button" onclick="goBack()">Voltar</button>
+        </div>
+    `;
+    navigateTo('step4');
+}
 
         // Seleção de categoria para bifocais
         function selectBifocalCategory(category) {
