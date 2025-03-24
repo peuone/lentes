@@ -452,17 +452,17 @@
                 <h3>Selecione o Tipo de Lente:</h3>
                 <div class="options-grid">
                     <div class="option-card" onclick="selectCategory('visao-simples')">
-                        <img src="pictures/visao-simples.png" alt="Visão Simples">
+                        <img src="pictures/visao simples 2.png" alt="Visão Simples">
                         <h4>Visão Simples</h4>
                         <p>Lentes para correção de problemas de visão de perto ou longe.</p>
                     </div>
                     <div class="option-card" onclick="selectCategory('multifocais')">
-                        <img src="pictures/multifocal.png" alt="Multifocais">
+                        <img src="pictures/MULTIFOCAL2.png" alt="Multifocais">
                         <h4>Multifocais</h4>
                         <p>Lentes que corrigem visão de perto, intermediária e longe.</p>
                     </div>
                     <div class="option-card" onclick="selectCategory('bifocais')">
-                        <img src="pictures/bifocal.png" alt="Bifocais">
+                        <img src="pictures/bifocal2.png" alt="Bifocais">
                         <h4>Bifocais</h4>
                         <p>Lentes com duas áreas de visão: perto e longe.</p>
                     </div>
@@ -710,9 +710,27 @@
                 <p><strong>Antirreflexo:</strong> ${currentSelection.antirreflexo}</p>
                 
                 <div class="observations">
-                    <label for="observations">Observações (opcional):</label>
-                    <textarea id="observations" placeholder="Adicione observações, se necessário"></textarea>
-                </div>
+    <label for="observations">Observações (opcional):</label>
+    <textarea id="observations" placeholder="Adicione observações, se necessário"></textarea>
+</div>
+
+<style>
+    .observations {
+        display: flex;
+        flex-direction: column; /* Garante que os elementos fiquem em coluna */
+    }
+
+    .observations label {
+        display: block;
+        margin-bottom: 5px; /* Espaçamento entre o label e o textarea */
+    }
+
+    .observations textarea {
+        width: 100%;
+        display: block;
+        min-height: 100px; /* Define uma altura mínima para melhor usabilidade */
+    }
+</style>
 
                 <div class="navigation-buttons">
                     <button class="back-button" onclick="goBack()">Voltar</button>
