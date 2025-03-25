@@ -696,7 +696,7 @@
                 whatsappMessage += `\n*Observações Adicionais:*\n${observations}\n`;
             }
 
-            const whatsappLink = `https://wa.me/5581997665895?text=${encodeURIComponent(whatsappMessage)}`;
+            const whatsappLink = `https://wa.me/5581992831087?text=${encodeURIComponent(whatsappMessage)}`;
 
             summary.innerHTML = `
                 <h3>Resumo Final da Sua Escolha:</h3>
@@ -741,7 +741,7 @@
 
             document.getElementById('observations').addEventListener('input', function() {
                 const updatedMessage = whatsappMessage + (this.value ? `\n\n*Observações Adicionais:*\n${this.value}` : '');
-                document.getElementById('whatsapp-link').href = `https://wa.me/5581997665895?text=${encodeURIComponent(updatedMessage)}`;
+                document.getElementById('whatsapp-link').href = `https://wa.me/5581992831087?text=${encodeURIComponent(updatedMessage)}`;
             });
         }
 
