@@ -15,6 +15,9 @@
             --background-color: #F4F4F4;
             --white-text: #FFFFFF;
             --premium-color: #FFD700;
+            --resina-color: #4CAF50;
+            --policarbonato-color: #2196F3;
+            --alto-indice-color: #9C27B0;
         }
 
         body {
@@ -91,6 +94,21 @@
             font-size: 0.8em;
             margin-right: 5px;
             font-weight: bold;
+        }
+
+        .resina-badge {
+            background-color: var(--resina-color);
+            color: white;
+        }
+
+        .policarbonato-badge {
+            background-color: var(--policarbonato-color);
+            color: white;
+        }
+
+        .alto-indice-badge {
+            background-color: var(--alto-indice-color);
+            color: white;
         }
 
         .navigation-buttons {
@@ -179,7 +197,48 @@
             min-height: 100px;
         }
 
-        /* Estilos corrigidos para os sliders de comparação com transparência */
+        .info-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+
+        .loja-card p {
+            margin: 5px 0;
+            font-size: 0.8em;
+            color: var(--text-color);
+        }
+        
+        .badge-container {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .badge-container .badge {
+            position: absolute;
+            top: 0px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            font-size: 0.9em;
+            padding: 4px 10px;
+        }
+        
+        .option-card img {
+            margin-top: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Estilos para os sliders de comparação com transparência */
         .comparison-container {
             width: 100%;
             max-width: 600px;
@@ -285,7 +344,8 @@
         <div id="step3" class="step"></div> <!-- Categoria de lentes -->
         <div id="step4" class="step"></div> <!-- Tipo de lente -->
         <div id="step5" class="step"></div> <!-- Versão ou Categoria Bifocal -->
-        <div id="step6" class="step"></div> <!-- Fotossensível -->
+        <div id="step6" class="step"></div> <!-- Índice de refração -->
+        <div id="step7" class="step"></div> <!-- Fotossensível -->
         <div id="summary" class="step summary"></div> <!-- Resumo -->
     </div>
 
@@ -336,13 +396,40 @@
                 categories: ['Ultex', 'Panoptik', 'Kriptok', 'Executive'],
                 fotossensivel: ['Sim', 'Não'],
                 antirreflexo: ['Sem Antirreflexo', 'Verde', 'Azul', 'Solar']
-            }
+            },
+            'indice-refracao': [
+                { 
+                    name: 'Padrão', 
+                    img: 'pictures/resina-padrao.png',
+                    desc: 'Melhor custo-benefício, indicado para graus baixos (até ±3.00) e armações menores.<br><br>✅ Boa qualidade óptica<br>✅ Maior espessura em comparação com índices mais altos<br>✅ Opcionais de tratamento antirreflexo e proteção UV',
+                    badgeClass: 'resina-badge'
+                },
+                { 
+                    name: 'Policarbonato', 
+                    img: 'pictures/policarbonato.png',
+                    desc: 'Ideal para crianças, esportes e uso diário com mais resistência.<br><br>✅ Alta resistência a impactos (mais seguro)<br>✅ Lente leve e confortável<br>✅ Proteção UV integrada',
+                    badgeClass: 'policarbonato-badge'
+                },
+                { 
+                    name: 'Alto Indice', 
+                    img: 'pictures/alto-indice.png',
+                    desc: 'Recomendado para graus médios a altos (acima de ±3.00), proporcionando mais estética e conforto.<br><br>✅ Lentes mais finas e leves<br>✅ Melhor opção para armações maiores<br>✅ Proteção UV integrada',
+                    badgeClass: 'alto-indice-badge'
+                },
+                { 
+                    name: 'Obter Sugestão da Loja', 
+                    img: 'pictures/sugestao-loja.png',
+                    desc: 'Não tem certeza sobre a melhor opção? Nossa equipe pode recomendar a lente ideal com base no seu grau e armação!<br><br>✅ Avaliação personalizada<br>✅ Melhor equilíbrio entre estética e custo<br>✅ Escolha segura e recomendada por especialistas',
+                    badgeClass: ''
+                }
+            ]
         };
 
         let currentSelection = {
             category: '',
             type: '',
             versao: '',
+            indiceRefracao: '',
             fotossensivel: '',
             antirreflexo: '',
             bifocalCategory: '',
@@ -359,7 +446,7 @@
             document.getElementById(stepId).classList.add('active');
             
             // Inicializar sliders quando a página carregar
-            if (stepId === 'step6' || stepId === 'summary') {
+            if (stepId === 'step7' || stepId === 'summary') {
                 setTimeout(initComparisonSliders, 100);
             }
         }
@@ -518,7 +605,7 @@
             } else if (currentSelection.category === 'bifocais') {
                 showBifocalCategorySelection();
             } else {
-                showFotossensivelSelection();
+                showIndiceRefracaoSelection();
             }
         }
 
@@ -544,7 +631,7 @@
 
         function selectVersion(version) {
             currentSelection.versao = version;
-            showFotossensivelSelection();
+            showIndiceRefracaoSelection();
         }
 
         function showBifocalCategorySelection() {
@@ -568,13 +655,39 @@
 
         function selectBifocalCategory(category) {
             currentSelection.bifocalCategory = category;
+            showIndiceRefracaoSelection();
+        }
+
+        function showIndiceRefracaoSelection() {
+            const step6 = document.getElementById('step6');
+            step6.innerHTML = `
+                <h3>Escolha o Índice de Refração:</h3>
+                <div class="options-grid">
+                    ${options['indice-refracao'].map(item => `
+                        <div class="option-card" onclick="selectIndiceRefracao('${item.name}')">
+                            ${item.badgeClass ? `<span class="badge ${item.badgeClass}">${item.name.split(' ')[0]}</span>` : ''}
+                            <img src="${item.img}" alt="${item.name}">
+                            <h4>${item.name}</h4>
+                            <p>${item.desc}</p>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="navigation-buttons">
+                    <button class="back-button" onclick="goBack()">Voltar</button>
+                </div>
+            `;
+            navigateTo('step6');
+        }
+
+        function selectIndiceRefracao(indice) {
+            currentSelection.indiceRefracao = indice;
             showFotossensivelSelection();
         }
 
         function showFotossensivelSelection() {
-            const step6 = document.getElementById('step6');
+            const step7 = document.getElementById('step7');
             
-            step6.innerHTML = `
+            step7.innerHTML = `
                 <h3>Tratamento Fotossensível:</h3>
                 <div class="options-grid">
                     ${options[currentSelection.category].fotossensivel.map(opt => `
@@ -604,7 +717,7 @@
                     <button class="back-button" onclick="goBack()">Voltar</button>
                 </div>
             `;
-            navigateTo('step6');
+            navigateTo('step7');
         }
 
         function selectFotossensivel(opt) {
@@ -736,6 +849,7 @@
             whatsappMessage += `*Tipo:* ${currentSelection.type}\n`;
             if (currentSelection.versao) whatsappMessage += `*Versão:* ${currentSelection.versao}\n`;
             if (currentSelection.bifocalCategory) whatsappMessage += `*Categoria Bifocal:* ${currentSelection.bifocalCategory}\n`;
+            whatsappMessage += `*Índice de Refração:* ${currentSelection.indiceRefracao}\n`;
             whatsappMessage += `*Fotossensível:* ${currentSelection.fotossensivel}\n`;
             whatsappMessage += `*Antirreflexo:* ${currentSelection.antirreflexo}\n`;
             
@@ -757,6 +871,7 @@
                 <p><strong>Tipo:</strong> ${currentSelection.type}</p>
                 ${currentSelection.versao ? `<p><strong>Versão:</strong> ${currentSelection.versao}</p>` : ''}
                 ${currentSelection.bifocalCategory ? `<p><strong>Categoria Bifocal:</strong> ${currentSelection.bifocalCategory}</p>` : ''}
+                <p><strong>Índice de Refração:</strong> ${currentSelection.indiceRefracao}</p>
                 <p><strong>Fotossensível:</strong> ${currentSelection.fotossensivel}</p>
                 <p><strong>Antirreflexo:</strong> ${currentSelection.antirreflexo}</p>
                 
@@ -783,6 +898,7 @@
                 category: '',
                 type: '',
                 versao: '',
+                indiceRefracao: '',
                 fotossensivel: '',
                 antirreflexo: '',
                 bifocalCategory: '',
