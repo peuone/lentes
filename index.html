@@ -217,25 +217,98 @@
         }
         
         .badge-container {
-    position: relative;
-    display: inline-block;
-    width: 100%;
+            position: relative;
+            display: inline-block;
+            width: 100%;
         }
         
         .badge-container .badge {
-    position: absolute;
-    top: 0px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-    font-size: 0.9em;
-    padding: 4px 10px;
+            position: absolute;
+            top: 0px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            font-size: 0.9em;
+            padding: 4px 10px;
         }
         
         .option-card img {
-    margin-top: 10px;
-    position: relative;
-    z-index: 1;
+            margin-top: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Estilos para os sliders de comparação */
+        .comparison-slider {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-slider img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .comparison-slider .before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .comparison-slider .slider-handle {
+            position: absolute;
+            width: 4px;
+            height: 100%;
+            background: white;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            cursor: ew-resize;
+            z-index: 10;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        
+        .comparison-slider .slider-handle:after {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: white;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+        
+        .comparison-slider .slider-handle:before {
+            content: "◀ ▶";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--primary-color);
+            font-size: 12px;
+        }
+
+        .slider-section {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .slider-title {
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
         }
     </style>
 </head>
@@ -260,36 +333,16 @@
         <div id="step3" class="step"></div> <!-- Categoria de lentes -->
         <div id="step4" class="step"></div> <!-- Tipo de lente -->
         <div id="step5" class="step"></div> <!-- Versão ou Categoria Bifocal -->
-        <div id="step6" class="step"></div> <!-- Índice de refração -->
-        <div id="step7" class="step"></div> <!-- Fotossensível -->
+        <div id="step6" class="step"></div> <!-- Fotossensível -->
         <div id="summary" class="step summary"></div> <!-- Resumo -->
     </div>
 
-     <!-- Rodapé com créditos -->
-    <div class="campaign-banner" style="text-align: center; margin: 20px 0;">
-    <img src="pictures/campanha.gif" alt="Promoção Especial" style="width: 100%; max-width: 600px; border-radius: 10px;">
-</div>
-    <div class="content">
-   <p>
-    Essa plataforma <strong>moderniza e agiliza o atendimento</strong>, beneficiando tanto <strong>clientes</strong> quanto <strong>vendedores</strong>. 
-    Permite <strong>agendamentos rápidos de consultas</strong> e a <strong>pré-seleção de produtos</strong>, tornando o processo mais prático, dinâmico e organizado.
-</p>
-
-<p>
-    Além disso, funciona como um <strong>suporte de vendas dentro da loja</strong>, elevando o profissionalismo e proporcionando uma <strong>experiência de atendimento mais eficiente e alinhada às expectativas do cliente</strong>.
-</p>
-
-<p>
-    A loja também pode <strong>destacar produtos estratégicos</strong>, como os <strong>Multifocais Freeform DMax da Haytek</strong>, facilitando a escolha das melhores opções e impulsionando as vendas.
-</p>
-
-<div class="footer">
-    <footer style="text-align: center; padding: 10px; background-color: #f4f4f4; font-size: 14px;">
-        <p>🚧 Em desenvolvimento por <strong>Pedro Rodrigues</strong> </p>
-        <p>📩 Sugestões? Me chama no WhatsApp: <a href="https://wa.me/5581997665895" target="_blank">+55 81 99766-5895</a></p>
-    </footer>
-</div>
-
+    <div class="footer">
+        <footer style="text-align: center; padding: 10px; background-color: #f4f4f4; font-size: 14px;">
+            <p>🚧 Em desenvolvimento por <strong>Pedro Rodrigues</strong> </p>
+            <p>📩 Sugestões? Me chama no WhatsApp: <a href="https://wa.me/5581997665895" target="_blank">+55 81 99766-5895</a></p>
+        </footer>
+    </div>
 
     <script>
         const options = {
@@ -331,40 +384,13 @@
                 categories: ['Ultex', 'Panoptik', 'Kriptok', 'Executive'],
                 fotossensivel: ['Sim', 'Não'],
                 antirreflexo: ['Sem Antirreflexo', 'Verde', 'Azul', 'Solar']
-            },
-            'indice-refracao': [
-                { 
-                    name: 'Padrão', 
-                    img: 'pictures/resina-padrao.png',
-                    desc: 'Melhor custo-benefício, indicado para graus baixos (até ±3.00) e armações menores.<br><br>✅ Boa qualidade óptica<br>✅ Maior espessura em comparação com índices mais altos<br>✅ Opcionais de tratamento antirreflexo e proteção UV',
-                    badgeClass: 'resina-badge'
-                },
-                { 
-                    name: 'Policarbonato', 
-                    img: 'pictures/policarbonato.png',
-                    desc: 'Ideal para crianças, esportes e uso diário com mais resistência.<br><br>✅ Alta resistência a impactos (mais seguro)<br>✅ Lente leve e confortável<br>✅ Proteção UV integrada',
-                    badgeClass: 'policarbonato-badge'
-                },
-                { 
-                    name: 'Alto Indice', 
-                    img: 'pictures/alto-indice.png',
-                    desc: 'Recomendado para graus médios a altos (acima de ±3.00), proporcionando mais estética e conforto.<br><br>✅ Lentes mais finas e leves<br>✅ Melhor opção para armações maiores<br>✅ Proteção UV integrada',
-                    badgeClass: 'alto-indice-badge'
-                },
-                { 
-                    name: 'Obter Sugestão da Loja', 
-                    img: 'pictures/sugestao-loja.png',
-                    desc: 'Não tem certeza sobre a melhor opção? Nossa equipe pode recomendar a lente ideal com base no seu grau e armação!<br><br>✅ Avaliação personalizada<br>✅ Melhor equilíbrio entre estética e custo<br>✅ Escolha segura e recomendada por especialistas',
-                    badgeClass: ''
-                }
-            ]
+            }
         };
 
         let currentSelection = {
             category: '',
             type: '',
             versao: '',
-            indiceRefracao: '',
             fotossensivel: '',
             antirreflexo: '',
             bifocalCategory: '',
@@ -379,6 +405,11 @@
             if (!fromHistory) currentStepHistory.push(stepId);
             document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
             document.getElementById(stepId).classList.add('active');
+            
+            // Inicializar sliders quando a página carregar
+            if (stepId === 'step6' || stepId === 'summary') {
+                setTimeout(initComparisonSliders, 100);
+            }
         }
 
         function goBack() {
@@ -535,7 +566,7 @@
             } else if (currentSelection.category === 'bifocais') {
                 showBifocalCategorySelection();
             } else {
-                showIndiceRefracaoSelection();
+                showFotossensivelSelection();
             }
         }
 
@@ -561,7 +592,7 @@
 
         function selectVersion(version) {
             currentSelection.versao = version;
-            showIndiceRefracaoSelection();
+            showFotossensivelSelection();
         }
 
         function showBifocalCategorySelection() {
@@ -585,44 +616,13 @@
 
         function selectBifocalCategory(category) {
             currentSelection.bifocalCategory = category;
-            showIndiceRefracaoSelection();
-        }
-
-        function showIndiceRefracaoSelection() {
-            const step6 = document.getElementById('step6');
-            step6.innerHTML = `
-                <h3>Escolha o Índice de Refração:</h3>
-                <div class="options-grid">
-                    ${options['indice-refracao'].map(item => `
-                        <div class="option-card" onclick="selectIndiceRefracao('${item.name}')">
-                            ${item.badgeClass ? `<span class="badge ${item.badgeClass}">${item.name.split(' ')[0]}</span>` : ''}
-                            <img src="${item.img}" alt="${item.name}">
-                            <h4>${item.name}</h4>
-                            <p>${item.desc}</p>
-                        </div>
-                    `).join('')}
-                </div>
-                <div class="navigation-buttons">
-                    <button class="back-button" onclick="goBack()">Voltar</button>
-                </div>
-            `;
-            navigateTo('step6');
-        }
-
-        function selectIndiceRefracao(indice) {
-            currentSelection.indiceRefracao = indice;
             showFotossensivelSelection();
         }
 
         function showFotossensivelSelection() {
-            const step7 = document.getElementById('step7');
+            const step6 = document.getElementById('step6');
             
-            if (!options[currentSelection.category] || !options[currentSelection.category].fotossensivel) {
-                console.error("Opções de fotossensível não definidas para esta categoria:", currentSelection.category);
-                return;
-            }
-
-            step7.innerHTML = `
+            step6.innerHTML = `
                 <h3>Tratamento Fotossensível:</h3>
                 <div class="options-grid">
                     ${options[currentSelection.category].fotossensivel.map(opt => `
@@ -633,11 +633,23 @@
                         </div>
                     `).join('')}
                 </div>
+                
+                <div class="slider-section">
+                    <div class="slider-title">Compare o efeito fotossensível:</div>
+                    <div class="comparison-slider">
+                        <img src="pictures/lente-sem-fotossensivel.jpg" alt="Sem Fotossensível">
+                        <div class="before">
+                            <img src="pictures/lente-com-fotossensivel.jpg" alt="Com Fotossensível">
+                        </div>
+                        <div class="slider-handle"></div>
+                    </div>
+                </div>
+                
                 <div class="navigation-buttons">
                     <button class="back-button" onclick="goBack()">Voltar</button>
                 </div>
             `;
-            navigateTo('step7');
+            navigateTo('step6');
         }
 
         function selectFotossensivel(opt) {
@@ -667,11 +679,62 @@
                         </div>
                     `).join('')}
                 </div>
+                
+                <div class="slider-section">
+                    <div class="slider-title">Compare o efeito antirreflexo:</div>
+                    <div class="comparison-slider">
+                        <img src="pictures/lente-sem-antirreflexo.jpg" alt="Sem Antirreflexo">
+                        <div class="before">
+                            <img src="pictures/lente-com-antirreflexo.jpg" alt="Com Antirreflexo">
+                        </div>
+                        <div class="slider-handle"></div>
+                    </div>
+                </div>
+                
                 <div class="navigation-buttons">
                     <button class="back-button" onclick="goBack()">Voltar</button>
                 </div>
             `;
             navigateTo('summary');
+        }
+
+        function initComparisonSliders() {
+            const sliders = document.querySelectorAll('.comparison-slider');
+            
+            sliders.forEach(slider => {
+                const before = slider.querySelector('.before');
+                const handle = slider.querySelector('.slider-handle');
+                
+                let isDragging = false;
+                
+                function moveSlider(e) {
+                    if (!isDragging) return;
+                    
+                    let x = e.pageX - slider.getBoundingClientRect().left;
+                    if (e.type === 'touchmove') {
+                        x = e.touches[0].pageX - slider.getBoundingClientRect().left;
+                    }
+                    
+                    x = Math.max(0, Math.min(x, slider.offsetWidth));
+                    
+                    const percent = (x / slider.offsetWidth) * 100;
+                    before.style.width = `${percent}%`;
+                    handle.style.left = `${percent}%`;
+                }
+                
+                function stopDrag() {
+                    isDragging = false;
+                }
+                
+                handle.addEventListener('mousedown', () => isDragging = true);
+                handle.addEventListener('touchstart', () => isDragging = true);
+                
+                document.addEventListener('mousemove', moveSlider);
+                document.addEventListener('touchmove', moveSlider);
+                
+                document.addEventListener('mouseup', stopDrag);
+                document.addEventListener('touchend', stopDrag);
+            });
         }
 
         function getAntirreflexoImage(opt) {
@@ -711,7 +774,6 @@
             whatsappMessage += `*Tipo:* ${currentSelection.type}\n`;
             if (currentSelection.versao) whatsappMessage += `*Versão:* ${currentSelection.versao}\n`;
             if (currentSelection.bifocalCategory) whatsappMessage += `*Categoria Bifocal:* ${currentSelection.bifocalCategory}\n`;
-            whatsappMessage += `*Índice de Refração:* ${currentSelection.indiceRefracao}\n`;
             whatsappMessage += `*Fotossensível:* ${currentSelection.fotossensivel}\n`;
             whatsappMessage += `*Antirreflexo:* ${currentSelection.antirreflexo}\n`;
             
@@ -733,32 +795,13 @@
                 <p><strong>Tipo:</strong> ${currentSelection.type}</p>
                 ${currentSelection.versao ? `<p><strong>Versão:</strong> ${currentSelection.versao}</p>` : ''}
                 ${currentSelection.bifocalCategory ? `<p><strong>Categoria Bifocal:</strong> ${currentSelection.bifocalCategory}</p>` : ''}
-                <p><strong>Índice de Refração:</strong> ${currentSelection.indiceRefracao}</p>
                 <p><strong>Fotossensível:</strong> ${currentSelection.fotossensivel}</p>
                 <p><strong>Antirreflexo:</strong> ${currentSelection.antirreflexo}</p>
                 
                 <div class="observations">
-    <label for="observations">Observações (opcional):</label>
-    <textarea id="observations" placeholder="Adicione observações, se necessário"></textarea>
-</div>
-
-<style>
-    .observations {
-        display: flex;
-        flex-direction: column; /* Garante que os elementos fiquem em coluna */
-    }
-
-    .observations label {
-        display: block;
-        margin-bottom: 5px; /* Espaçamento entre o label e o textarea */
-    }
-
-    .observations textarea {
-        width: 100%;
-        display: block;
-        min-height: 100px; /* Define uma altura mínima para melhor usabilidade */
-    }
-</style>
+                    <label for="observations">Observações (opcional):</label>
+                    <textarea id="observations" placeholder="Adicione observações, se necessário"></textarea>
+                </div>
 
                 <div class="navigation-buttons">
                     <button class="back-button" onclick="goBack()">Voltar</button>
@@ -778,7 +821,6 @@
                 category: '',
                 type: '',
                 versao: '',
-                indiceRefracao: '',
                 fotossensivel: '',
                 antirreflexo: '',
                 bifocalCategory: '',
