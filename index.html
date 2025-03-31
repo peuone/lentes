@@ -179,7 +179,7 @@
             min-height: 100px;
         }
 
-        /* Estilos corrigidos para os sliders de comparação */
+        /* Estilos corrigidos para os sliders de comparação com transparência */
         .comparison-container {
             width: 100%;
             max-width: 600px;
@@ -202,10 +202,19 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         
-        .comparison-slider img {
+        .comparison-slider .img-container {
+            position: relative;
             width: 100%;
-            height: auto;
-            display: block;
+            height: 0;
+            padding-bottom: 66.66%; /* Proporção 3:2 */
+        }
+        
+        .comparison-slider img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
         }
         
@@ -213,50 +222,45 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 50%;
+            width: 100%;
             height: 100%;
-            overflow: hidden;
-        }
-        
-        .comparison-slider .before img {
-            height: 100%;
-            object-fit: cover;
+            opacity: 1;
+            transition: opacity 0.3s ease;
         }
         
         .comparison-slider .slider-handle {
             position: absolute;
-            width: 4px;
+            width: 40px;
+            height: 40px;
+            background: white;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            cursor: ew-resize;
+            z-index: 10;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .comparison-slider .slider-handle:before {
+            content: "◀ ▶";
+            color: var(--primary-color);
+            font-size: 12px;
+        }
+        
+        .comparison-slider .slider-line {
+            position: absolute;
+            width: 2px;
             height: 100%;
             background: white;
             left: 50%;
             top: 0;
             transform: translateX(-50%);
-            cursor: ew-resize;
-            z-index: 10;
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-        }
-        
-        .comparison-slider .slider-handle:after {
-            content: "";
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: white;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            z-index: 5;
             box-shadow: 0 0 5px rgba(0,0,0,0.5);
-        }
-        
-        .comparison-slider .slider-handle:before {
-            content: "◀ ▶";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: var(--primary-color);
-            font-size: 12px;
         }
     </style>
 </head>
@@ -585,10 +589,13 @@
                 <div class="comparison-container">
                     <div class="slider-title">Compare o efeito fotossensível:</div>
                     <div class="comparison-slider">
-                        <img src="pictures/lente-sem-fotossensivel.jpg" alt="Sem Fotossensível">
-                        <div class="before">
-                            <img src="pictures/lente-com-fotossensivel.jpg" alt="Com Fotossensível">
+                        <div class="img-container">
+                            <img src="pictures/lente-sem-fotossensivel.jpg" alt="Sem Fotossensível">
+                            <div class="before">
+                                <img src="pictures/lente-com-fotossensivel.jpg" alt="Com Fotossensível">
+                            </div>
                         </div>
+                        <div class="slider-line"></div>
                         <div class="slider-handle"></div>
                     </div>
                 </div>
@@ -631,10 +638,13 @@
                 <div class="comparison-container">
                     <div class="slider-title">Compare o efeito antirreflexo:</div>
                     <div class="comparison-slider">
-                        <img src="pictures/lente-sem-antirreflexo.jpg" alt="Sem Antirreflexo">
-                        <div class="before">
-                            <img src="pictures/lente-com-antirreflexo.jpg" alt="Com Antirreflexo">
+                        <div class="img-container">
+                            <img src="pictures/lente-sem-antirreflexo.jpg" alt="Sem Antirreflexo">
+                            <div class="before">
+                                <img src="pictures/lente-com-antirreflexo.jpg" alt="Com Antirreflexo">
+                            </div>
                         </div>
+                        <div class="slider-line"></div>
                         <div class="slider-handle"></div>
                     </div>
                 </div>
@@ -652,6 +662,7 @@
             sliders.forEach(slider => {
                 const before = slider.querySelector('.before');
                 const handle = slider.querySelector('.slider-handle');
+                const line = slider.querySelector('.slider-line');
                 
                 let isDragging = false;
                 
@@ -666,8 +677,11 @@
                     x = Math.max(0, Math.min(x, slider.offsetWidth));
                     
                     const percent = (x / slider.offsetWidth) * 100;
-                    before.style.width = `${percent}%`;
+                    const opacity = 1 - (percent / 100);
+                    
+                    before.style.opacity = opacity;
                     handle.style.left = `${percent}%`;
+                    line.style.left = `${percent}%`;
                 }
                 
                 function stopDrag() {
