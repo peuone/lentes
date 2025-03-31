@@ -15,9 +15,6 @@
             --background-color: #F4F4F4;
             --white-text: #FFFFFF;
             --premium-color: #FFD700;
-            --resina-color: #4CAF50;
-            --policarbonato-color: #2196F3;
-            --alto-indice-color: #9C27B0;
         }
 
         body {
@@ -94,21 +91,6 @@
             font-size: 0.8em;
             margin-right: 5px;
             font-weight: bold;
-        }
-
-        .resina-badge {
-            background-color: var(--resina-color);
-            color: white;
-        }
-
-        .policarbonato-badge {
-            background-color: var(--policarbonato-color);
-            color: white;
-        }
-
-        .alto-indice-badge {
-            background-color: var(--alto-indice-color);
-            color: white;
         }
 
         .navigation-buttons {
@@ -197,55 +179,26 @@
             min-height: 100px;
         }
 
-        .info-icon {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            background-color: var(--primary-color);
-            color: white;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 20px;
-            font-size: 12px;
-            margin-right: 5px;
-        }
-
-        .loja-card p {
-            margin: 5px 0;
-            font-size: 0.8em;
-            color: var(--text-color);
-        }
-        
-        .badge-container {
-            position: relative;
-            display: inline-block;
+        /* Estilos corrigidos para os sliders de comparação */
+        .comparison-container {
             width: 100%;
-        }
-        
-        .badge-container .badge {
-            position: absolute;
-            top: 0px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 2;
-            font-size: 0.9em;
-            padding: 4px 10px;
-        }
-        
-        .option-card img {
-            margin-top: 10px;
+            max-width: 600px;
+            margin: 30px auto;
             position: relative;
-            z-index: 1;
         }
-
-        /* Estilos para os sliders de comparação */
+        
+        .slider-title {
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
         .comparison-slider {
             position: relative;
             width: 100%;
-            max-width: 600px;
-            margin: 20px auto;
-            border-radius: 10px;
             overflow: hidden;
+            border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         
@@ -253,6 +206,7 @@
             width: 100%;
             height: auto;
             display: block;
+            object-fit: cover;
         }
         
         .comparison-slider .before {
@@ -262,6 +216,11 @@
             width: 50%;
             height: 100%;
             overflow: hidden;
+        }
+        
+        .comparison-slider .before img {
+            height: 100%;
+            object-fit: cover;
         }
         
         .comparison-slider .slider-handle {
@@ -298,17 +257,6 @@
             transform: translate(-50%, -50%);
             color: var(--primary-color);
             font-size: 12px;
-        }
-
-        .slider-section {
-            margin: 30px 0;
-            text-align: center;
-        }
-
-        .slider-title {
-            margin-bottom: 15px;
-            font-weight: 600;
-            color: var(--primary-color);
         }
     </style>
 </head>
@@ -634,7 +582,7 @@
                     `).join('')}
                 </div>
                 
-                <div class="slider-section">
+                <div class="comparison-container">
                     <div class="slider-title">Compare o efeito fotossensível:</div>
                     <div class="comparison-slider">
                         <img src="pictures/lente-sem-fotossensivel.jpg" alt="Sem Fotossensível">
@@ -680,7 +628,7 @@
                     `).join('')}
                 </div>
                 
-                <div class="slider-section">
+                <div class="comparison-container">
                     <div class="slider-title">Compare o efeito antirreflexo:</div>
                     <div class="comparison-slider">
                         <img src="pictures/lente-sem-antirreflexo.jpg" alt="Sem Antirreflexo">
